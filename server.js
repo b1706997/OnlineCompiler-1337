@@ -6,5 +6,5 @@ const server = app.listen(process.env.PORT || 1111,()=> {
 })
 app.set('view engine','pug');
 app.get('/',(req,res) => {
-    res.render('HTML');
+    res.render('/Views/HTML');
 })
