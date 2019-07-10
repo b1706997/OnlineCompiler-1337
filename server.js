@@ -11,6 +11,7 @@ const server = app.listen(process.env.PORT || 1111,err => {
     console.log(`Express running -> PORT ${server.address().port}`);
 });
 app.set('view engine','pug');
+app.set("views", path.join(__dirname, "views"));
 app.get('/',(req,res) => {
-    res.render('HTML.pug');
+    res.render('HTML');
 });
