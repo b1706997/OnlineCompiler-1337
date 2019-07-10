@@ -12,5 +12,5 @@ const server = app.listen(process.env.PORT || 1111,err => {
 });
 app.set('view engine','pug');
 app.get('/',(req,res) => {
-    res.render('HTML');
+    res.render('HTML.pug');
 });
