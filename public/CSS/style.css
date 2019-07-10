@@ -1,0 +1,58 @@
+h1 {
+    text-align: center;
+    color: rgb(0, 153, 255);
+    font-size: 50px;
+    padding-top: 10px;
+}
+head {
+    color:yellow;
+    font-size:30px;
+}
+button {
+    width: 100px;
+    height: 40px;
+    color:white;
+    font-display: bold;
+    font-size: 20px;
+    border-radius: 2px;
+    border:none;
+    display: inline-block;
+    margin-right: 5px;
+}
+.input {
+    width: 100%;
+    background-color: rgb(228, 228, 228);
+    height: 250px;
+}
+.output {
+    width: 100%;
+    background-color: black;
+    height: 250px;
+    color: rgb(59, 196, 70);
+}
+.toolbar {
+    padding-left: 65%;
+    margin-bottom: 5px;
+}
+#languagePicker {
+    height: 38px;
+    width: 100px;
+    font-size: 20px;
+    color:rgb(151, 41, 41);
+}
+button:hover {
+    filter:brightness(150%);
+}
+.Run {
+    background-color:rgb(73, 139, 84);
+}
+.Debug {
+    background-color: rgb(58, 58, 214);
+}
+.Stop {
+    background-color: rgb(192, 60, 60);
+}
+.Save
+{
+    background-color: cornflowerblue;
+}
