@@ -11,9 +11,11 @@
   "node": "12.3.1"
  },
  "dependencies": {
+  "ace-builds": "file:ace",
   "express": "^4.17.1",
   "nodemon": "^1.19.1",
-  "pug": "^2.0.4"
+  "pug": "^2.0.4",
+  "requirejs": "^2.3.6"
  },
  "keywords": [],
  "author": "NguyenNhatSon",

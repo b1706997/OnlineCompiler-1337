@@ -25,14 +25,21 @@ button {
     height: 250px;
 }
 .output {
+    position: absolute;
     width: 100%;
     background-color: black;
     height: 250px;
     color: rgb(59, 196, 70);
+    margin-top: 280px;
 }
 .toolbar {
     padding-left: 65%;
     margin-bottom: 5px;
+}
+#editor {
+    position: absolute;
+    width: 100%;
+    height: 260px;
 }
 #languagePicker {
     height: 38px;
