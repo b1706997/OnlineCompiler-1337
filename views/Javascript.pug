@@ -1,0 +1,17 @@
+extends index
+block content 
+    div(id='javascript')
+            pre(id="editor").
+                function foo(items) {
+                    var i;
+                    for (i = 0; i < items.length; i++) {
+                        alert("Ace Rocks " + items[i]);
+                    }
+                }
+            script(src="/JAVASCRIPT/ace/src/ace.js" type="text/javascript" charset="utf-8")
+            script
+                |document.getElementById("languagePicker").selectedIndex = 1;
+                |var editor = ace.edit("editor");
+                |editor.setTheme("ace/theme/twilight");
+                |editor.session.setMode("ace/mode/javascript");
+            textarea(class="output") /* Output */

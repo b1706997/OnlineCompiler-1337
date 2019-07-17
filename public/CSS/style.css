@@ -33,8 +33,8 @@ button {
     margin-top: 280px;
 }
 .toolbar {
-    padding-left: 65%;
     margin-bottom: 5px;
+    justify-content: left;
 }
 #editor {
     position: absolute;
@@ -43,9 +43,13 @@ button {
 }
 #languagePicker {
     height: 38px;
-    width: 100px;
+    width: 140px;
     font-size: 20px;
-    color:rgb(151, 41, 41);
+    color:rgb(14, 10, 10);
+    text-align: center;
+}
+#langForm {
+    display:inline-block;
 }
 button:hover {
     filter:brightness(150%);
