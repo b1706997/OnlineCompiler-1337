@@ -1,1 +1,25 @@
 extends index
+block content
+    div(id='cpp')
+        pre(id='editor').
+            int main() {
+                printf("Hello world!");
+            }
+        script(src="/JAVASCRIPT/ace/src/ace.js" type='text/javascript' charset='utf-8')
+        script.
+            document.getElementById('languagePicker').selectedIndex = 2;
+            var editor = ace.edit('editor');
+            editor.setTheme("ace/theme/twilight");
+            editor.session.setMode('ace/mode/c_cpp');
+        textarea(class="output") /* Output */
+        script.
+            console.log('client-side script running :D');
+            const button = document.getElementById('runbutton');
+            button.addEventListener('click',function(e) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST","/run",true);
+                xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                const a = editor.getValue();
+                xhttp.send(a);
+                console.log(a);
+                });

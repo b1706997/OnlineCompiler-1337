@@ -19,6 +19,17 @@ button {
     display: inline-block;
     margin-right: 5px;
 }
+#runbutton {
+    width:100px;
+    height:40px;
+    font-display: bold;
+    font-size: 20px;
+    border-radius: 2px;
+    border:none;
+    display:inline-block;
+    margin-right:5px;
+    color:white;
+}
 .input {
     width: 100%;
     background-color: rgb(228, 228, 228);

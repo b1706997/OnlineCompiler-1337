@@ -1,17 +1,19 @@
 doctype html
 html
     head
-        h1 Online Compiler
-        meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
-        link(rel="stylesheet" href="/CSS/style.css" type="text/css")
-        meta(name="viewport" content="width=device-width" initial-scale="1")
+        block head
+            h1 Online Compiler
+            meta(charset="UTF-8")
+            meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+            link(rel="stylesheet" href="/CSS/style.css" type="text/css")
+            meta(name="viewport" content="width=device-width" initial-scale="1")
     body
         div(class='toolbar')
-            button(type='button' class='Run') Run
-            button(type='button' class='Debug') Debug
-            button(type='button' class='Stop') Stop
-            button(type='button' class='Save') Save
+            form(method="post" action="/run" id='runbutton' class='Run')
+                button(type='button' class='Run' id='runbutton') Run
+            button(type='button' class='Debug' id='debug') Debug
+            button(type='button' class='Stop' id='stop') Stop
+            button(type='button' class='Save' id='save') Save
             form(method="post" action="/getLang" id="langForm")
                 select(name='languagePicker' id='languagePicker' onchange='this.form.submit()')
                     option(hidden disable selected value) Language
@@ -21,4 +23,3 @@ html
                     option(value='Python') Python
                     option(value='HTML/CSS') HTML/CSS
         block content
-

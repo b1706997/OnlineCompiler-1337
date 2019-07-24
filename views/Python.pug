@@ -2,19 +2,14 @@ extends index
 block content
     div(id='java')
         pre(id='editor').
-            public class HelloWorld {
-
-                public static void main(String[] args) {
-                // Prints "Hello, World" to the terminal window.
-                    System.out.println("Hello, World");
-                    }
-            }
+            my_string = "Hello, World!"
+            print(my_string)
         script(src="/JAVASCRIPT/ace/src/ace.js" type='text/javascript' charset='utf-8')
         script.
-            document.getElementById('languagePicker').selectedIndex = 3;
+            document.getElementById('languagePicker').selectedIndex = 4;
             var editor = ace.edit('editor');
             editor.setTheme("ace/theme/twilight");
-            editor.session.setMode('ace/mode/java');
+            editor.session.setMode('ace/mode/python');
         textarea(class="output") /* Output */
         script.
             console.log('client-side script running :D');

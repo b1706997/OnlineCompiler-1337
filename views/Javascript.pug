@@ -15,3 +15,14 @@ block content
                 |editor.setTheme("ace/theme/twilight");
                 |editor.session.setMode("ace/mode/javascript");
             textarea(class="output") /* Output */
+            script.
+                console.log('client-side script running :D');
+                const button = document.getElementById('runbutton');
+                button.addEventListener('click',function(e) {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.open("POST","/run",true);
+                    xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                    const a = editor.getValue();
+                    xhttp.send(a);
+                    console.log(a);
+                });
