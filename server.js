@@ -63,13 +63,12 @@ app.post('/getLang', (req,res) => {
         // language switch
         if(lang==='C++')
         {
-            var compile = spawn('gcc', ['public/CODE/code.cpp'],['-lstdc++']);
+            var compile = spawn('gcc', ['./public/CODE/code.cpp'],['-lstdc++']);
         }
         else if(lang==='Java')
         {
             var compile = spawn('javac',['public/CODE/code.java']);
         }
-        
         compile.stdout.on('data', function (data) {
             console.log('stdout: ' + data);
         });
