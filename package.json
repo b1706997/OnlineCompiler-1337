@@ -12,7 +12,9 @@
  },
  "dependencies": {
   "body-parser": "^1.19.0",
+  "compile-run": "^2.3.1",
   "express": "^4.17.1",
+  "gcc": "^1.0.2",
   "nodemon": "^1.19.1",
   "pug": "^2.0.4",
   "requirejs": "^2.3.6"

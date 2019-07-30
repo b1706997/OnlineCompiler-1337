@@ -11,15 +11,21 @@ block content
             var editor = ace.edit('editor');
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode('ace/mode/c_cpp');
-        textarea(class="output") /* Output */
+        textarea(class="output" disabled="disabled" id="output") /* Output */
         script.
             console.log('client-side script running :D');
             const button = document.getElementById('runbutton');
             button.addEventListener('click',function(e) {
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST","/run",true);
-                xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                const a = editor.getValue();
-                xhttp.send(a);
-                console.log(a);
-                });
+                var code = editor.getValue();
+                xhttp.open("POST","/getLang/run",true);
+                xhttp.setRequestHeader("Content-type","text/plain");
+                xhttp.send(code);
+                console.log(code);
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("output").innerHTML =
+                        this.responseText;
+                    }
+                };
+            });
