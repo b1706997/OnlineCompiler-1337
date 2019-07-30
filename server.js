@@ -37,7 +37,7 @@ app.post('/getLang', (req,res) => {
         // change the code file name to the correct language 
         if(lang==='C++')
         {
-            var newPath = path.join(__dirname,"public","CODE","code.cpp");
+            var newPath = path.join(__dirname,"public","CODE","code.c");
         }
         else if(lang==='Javascript')
         {
@@ -63,7 +63,7 @@ app.post('/getLang', (req,res) => {
         // language switch
         if(lang==='C++')
         {
-            var compile = spawn('gcc', ['./public/CODE/code.cpp'],['-lstdc++']);
+            var compile = spawn('gcc', ['./public/CODE/code.c']);
         }
         else if(lang==='Java')
         {
