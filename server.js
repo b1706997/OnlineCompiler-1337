@@ -61,7 +61,7 @@ app.post('/getLang', (req,res) => {
         // compile a file 
         var spawn = require('child_process').spawn;
         // language switch
-        var compile = spawn('tcc', ['./public/CODE/code.c'],['-lstdc++']);
+        var compile = spawn('gcc', ['./public/CODE/code.c'],['-lstdc++']);
         compile.stdout.on('data', function (data) {
             console.log('stdout: ' + data);
         });
