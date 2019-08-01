@@ -37,7 +37,7 @@ app.post('/getLang', (req,res) => {
         // change the code file name to the correct language 
         if(lang==='C++')
         {
-            var newPath = path.join(__dirname,"public","CODE","code.c");
+            var newPath = path.join(__dirname,"public","CODE","code.cpp");
         }
         else if(lang==='Javascript')
         {
@@ -57,11 +57,11 @@ app.post('/getLang', (req,res) => {
 
             console.log('File name changed');
         });
-
+        
         // compile a file 
         var spawn = require('child_process').spawn;
         // language switch
-        var compile = spawn('gcc', ['./public/CODE/code.c'],['-lstdc++']);
+        var compile = spawn('gcc', ['./public/CODE/code.cpp'],['-lstdc++']);
         compile.stdout.on('data', function (data) {
             console.log('stdout: ' + data);
         });
