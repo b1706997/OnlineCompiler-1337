@@ -60,8 +60,8 @@ app.post('/getLang', (req,res) => {
         
         // compile a file 
         var spawn = require('child_process').spawn;
-        // language switch
-        var compile = spawn('gcc', ['./public/CODE/code.cpp'],['-lstdc++']);
+        // language switch //['-lstdc++']
+        var compile = spawn('gcc', ['./public/CODE/code.cpp']);
         compile.stdout.on('data', function (data) {
             console.log('stdout: ' + data);
         });
