@@ -10,13 +10,11 @@ html
     body
         div(class='toolbar')
             button(type='button' class='Run' id='runbutton') Run
-            button(type='button' class='Debug' id='debug') Debug
             button(type='button' class='Stop' id='stop') Stop
             button(type='button' class='Save' id='save') Save
             form(method="post" action="/getLang" id="langForm")
                 select(name='languagePicker' id='languagePicker' onchange='this.form.submit()')
                     option(hidden disable selected value) Language
-                    option(value='Javascript') Javascript
                     option(value='C++') C++
                     option(value='Java') Java
                     option(value='Python') Python

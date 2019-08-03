@@ -11,11 +11,11 @@ block content
             }
         script(src="/JAVASCRIPT/ace/src/ace.js" type='text/javascript' charset='utf-8')
         script.
-            document.getElementById('languagePicker').selectedIndex = 3;
+            document.getElementById('languagePicker').selectedIndex = 2;
             var editor = ace.edit('editor');
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode('ace/mode/java');
-        textarea(class="output" disabled="disabled") /* Output */
+        textarea(class="output" disabled="disabled" id="output") /* Output */
         script.
             console.log('client-side script running :D');
             const button = document.getElementById('runbutton');
@@ -28,8 +28,7 @@ block content
                 console.log(code);
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("output").innerHTML =
-                        this.responseText;
+                        document.getElementById("output").innerHTML = this.responseText;
                     }
                 };
             });

@@ -1,0 +1,6 @@
+#include <stdio.h>
+int main() {
+    int a =5;
+    int b= 100;
+    printf("Hello sacddasadworsxasdld! %d %d %d",a,b,a+b);
+}

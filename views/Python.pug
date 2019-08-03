@@ -1,12 +1,12 @@
 extends index
 block content
-    div(id='java')
+    div(id='python')
         pre(id='editor').
             my_string = "Hello, World!"
             print(my_string)
         script(src="/JAVASCRIPT/ace/src/ace.js" type='text/javascript' charset='utf-8')
         script.
-            document.getElementById('languagePicker').selectedIndex = 4;
+            document.getElementById('languagePicker').selectedIndex = 3;
             var editor = ace.edit('editor');
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode('ace/mode/python');

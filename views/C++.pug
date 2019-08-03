@@ -7,7 +7,7 @@ block content
             }
         script(src="/JAVASCRIPT/ace/src/ace.js" type='text/javascript' charset='utf-8')
         script.
-            document.getElementById('languagePicker').selectedIndex = 2;
+            document.getElementById('languagePicker').selectedIndex = 1;
             var editor = ace.edit('editor');
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode('ace/mode/c_cpp');
@@ -24,8 +24,7 @@ block content
                 console.log(code);
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("output").innerHTML =
-                        this.responseText;
+                        document.getElementById("output").innerHTML = this.responseText;
                     }
                 };
             });
