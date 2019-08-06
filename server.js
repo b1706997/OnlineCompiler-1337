@@ -30,7 +30,10 @@ app.post('/getLang', (req,res) => {
         res.render(lang);
     app.post('/getLang/run',(req,res) => {
         console.log('Server route running');
-        const code = req.body; // code 
+        var program = JSON.parse(JSON.stringify(req.body));
+        var code = program.code;
+        var stdin = program.stdin;
+        //const code = req.body; // code 
         if(lang==='C++') // create languages id 
         {
             var language = "cpp";
@@ -47,6 +50,7 @@ app.post('/getLang', (req,res) => {
         // request body to send to jdoodle
         const runRequestBody = {
             script: code,
+            stdin:stdin,
             language: language,
             versionIndex:'0',
             clientId:'6d404c846ef58f0a957c5050f77eb09d',
@@ -66,12 +70,9 @@ app.post('/getLang', (req,res) => {
                 return res.status(400).send(parsedData);
             } else {
                 //console.log(parsedData.output);
-                return res.status(200).send(parsedData.output);
+                return res.status(200).send(parsedData.output+'\n\n-----------------------------\n\n'+'CPU runtime: '+parsedData.cpuTime+" seconds");
             }
-        })         
-             
-
-
+        })
 
 
 

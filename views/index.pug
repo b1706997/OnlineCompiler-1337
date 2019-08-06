@@ -19,4 +19,9 @@ html
                     option(value='Java') Java
                     option(value='Python') Python
                     option(value='HTML/CSS') HTML/CSS
+        div(id='stdinDIV')
+            p(id='stdininput') Stdin inputs
+            textarea(class='stdin' id='stdin')
+        script.
+            document.getElementById('stdinDIV').style.display = 'none';
         block content

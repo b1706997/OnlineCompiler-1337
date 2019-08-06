@@ -8,6 +8,23 @@ head {
     color:yellow;
     font-size:30px;
 }
+#stdininput {
+    font-size: 20px;
+    text-align: left;
+    position: relative;
+    bottom:4px;
+    display: inline-block;
+}
+.stdin {
+    height: 25px;
+    width: 350px;
+    margin-top: 10px;
+    position: relative;
+    display: inline-block;
+    left:5px;
+    font-size: 16px;
+}
+
 button {
     width: 100px;
     height: 40px;

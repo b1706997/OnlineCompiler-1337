@@ -7,6 +7,7 @@ block content
         script(src="/JAVASCRIPT/ace/src/ace.js" type='text/javascript' charset='utf-8')
         script.
             document.getElementById('languagePicker').selectedIndex = 3;
+            document.getElementById('stdinDIV').style.display = 'block';
             var editor = ace.edit('editor');
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode('ace/mode/python');
@@ -17,9 +18,11 @@ block content
             button.addEventListener('click',function(e) {
                 var xhttp = new XMLHttpRequest();
                 var code = editor.getValue();
+                var stdin = document.getElementById('stdin').value
+                var program = ''+ 'code=' + window.encodeURIComponent(code)+ '&stdin=' + window.encodeURIComponent(stdin);
                 xhttp.open("POST","/getLang/run",true);
-                xhttp.setRequestHeader("Content-type","text/plain");
-                xhttp.send(code);
+                xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xhttp.send(program);
                 console.log(code);
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
