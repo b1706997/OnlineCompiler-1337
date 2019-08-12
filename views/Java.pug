@@ -19,8 +19,9 @@ block content
         textarea(class="output" disabled="disabled" id="output") /* Output */
         script.
             console.log('client-side script running :D');
-            const button = document.getElementById('runbutton');
-            button.addEventListener('click',function(e) {
+            const saveButton = document.getElementById('save');
+            const runButton = document.getElementById('runbutton');
+            runButton.addEventListener('click',function(e) {
                 var xhttp = new XMLHttpRequest();
                 var code = editor.getValue();
                 var stdin = document.getElementById('stdin').value
@@ -34,4 +35,11 @@ block content
                         document.getElementById("output").innerHTML = this.responseText;
                     }
                 };
+            });
+            saveButton.addEventListener('click',function(e) {
+                var xhttp = new XMLHttpRequest();
+                var code = editor.getValue();
+                xhttp.open("POST",'/getLang/save',true);
+                xhttp.setRequestHeader("Content-type",'text/plain');
+                xhttp.send(code);
             });

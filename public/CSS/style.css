@@ -1,19 +1,49 @@
 h1 {
     text-align: center;
-    color: rgb(0, 153, 255);
+    color: white;
     font-size: 50px;
-    padding-top: 10px;
+    top:-80px;
+    padding-left:20px;
+    line-height: 69px;
+}
+html {
+    background-color: rgb(255, 255, 255);
+}
+.header {
+    background-color: rgb(12, 88, 143);
+    width: 99%;
+    height:70px;
+    margin-top:0;
+    padding-top:0;
+    position: relative;
+    top:-30px;
+}
+.innerheader {
+    background-color: rgb(12, 88, 143);
+    left:1270px;
+    position: relative;
+    width: 210px;
+    top:-87px;
+}
+.login {
+    background-color: rgb(0, 162, 255);
+}
+.signup {
+    background-color: rgb(0, 162, 255);
 }
 head {
     color:yellow;
     font-size:30px;
 }
 #stdininput {
-    font-size: 20px;
+    font-size: 22px;
     text-align: left;
     position: relative;
     bottom:4px;
     display: inline-block;
+    color:rgb(0, 162, 255);
+    font-display:bold;
+    font-weight: bold;
 }
 .stdin {
     height: 25px;
@@ -21,8 +51,13 @@ head {
     margin-top: 10px;
     position: relative;
     display: inline-block;
-    left:5px;
+    left:8px;
     font-size: 16px;
+}
+#stdinDIV { 
+    top:-30px;
+    position: relative;
+    height:20px;
 }
 
 button {
@@ -35,6 +70,8 @@ button {
     border:none;
     display: inline-block;
     margin-right: 5px;
+    cursor: pointer;
+    position: relative;
 }
 #runbutton {
     width:100px;
@@ -63,6 +100,9 @@ button {
 .toolbar {
     margin-bottom: 5px;
     justify-content: left;
+    top:-23px;
+    position: relative;
+    right:-20px;
 }
 #editor {
     position: absolute;
@@ -80,18 +120,98 @@ button {
     display:inline-block;
 }
 button:hover {
-    filter:brightness(150%);
+    filter:brightness(125%);
 }
 .Run {
     background-color:rgb(73, 139, 84);
 }
-.Debug {
-    background-color: rgb(58, 58, 214);
-}
+
 .Stop {
     background-color: rgb(192, 60, 60);
+    top:-2px;
 }
 .Save
 {
+    top:-1px;
     background-color: cornflowerblue;
+}
+
+/* login template */ 
+.loginTemplate {
+    display:none;
+    position: fixed;
+    z-index: 1;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.4);
+}
+.signupTemplate {
+    display:none;
+    position: fixed;
+    z-index: 1;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.animate {
+    animation: zoom 0.6s;
+}
+@keyframes zoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+.model-content {
+    background-color: #fefefe;
+    margin: 4% auto 15% auto;
+    border : 1px solid #888;
+    width: 40%;
+    padding-bottom: 30px;
+}
+.close {
+    position: absolute;
+    right:25px;
+    top:0;
+    color:#000;
+    font-size: 35px;
+    font-weight: bold;
+}
+.close:hover {
+    cursor: pointer;
+    color:red;
+}
+.imgcontainer {
+    text-align: center;
+    margin :24px 0px 12px 0;
+    position: relative;
+}
+.avatar {
+    width: 200px;
+    height: 200px;
+    border-radius:50%;
+}
+input[type=text], input[type=password] {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 26px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+	font-size:16px;
+}
+#templateLoginButton {
+    width: 90%;
+    background-color: rgb(0, 183, 255);
+    padding: 14px 20px;
+    margin: 8px 26px;
+    border:none;
+    cursor: pointer;
+    font-size:20px;
+    color:white;
+    line-height: 5px;
 }

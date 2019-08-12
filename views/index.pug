@@ -2,16 +2,49 @@ doctype html
 html
     head
         block head
-            h1 Online Compiler
+            div(class='header')
+                h1 Online Compiler
+                div(class='innerheader')
+                    button( class='login' id='login' onclick="document.getElementById('loginTemplate').style.display='block'") Login
+                    button( class='signup' id='signup' onclick="document.getElementById('signupTemplate').style.display='block'") Sign up
             meta(charset="UTF-8")
             meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
             link(rel="stylesheet" href="/CSS/style.css" type="text/css")
             meta(name="viewport" content="width=device-width" initial-scale="1")
     body
+        div(id='loginTemplate' class='loginTemplate')
+            form(action='/login' class='model-content animate')
+                div(class='imgcontainer')
+                    span(onclick="document.getElementById('loginTemplate').style.display='none'" class="close" title="Close PopUp") &#10006;
+                    img(src='/PICS/logo.png')
+                    h2(style='font-size:30px; color:rgb(12, 88, 143); font-weight:bold') Online Compiler Login
+                div(class='loginContainer')
+                    input(type='text' placeholder='Enter username' name='uname')
+                    input(type='password' placeholder='Enter password' name='psw')
+                    button(type='submit' id='templateLoginButton') Login
+                    label #[input(type='checkbox' style='margin:26px 30px; width:25px;')]
+                        |Remember me
+                    a(href="#" style="text-decoration:none; float:right; margin-right:34px; margin-top:26px; font-size:20px;") Forgot Password ?
+        div(id='signupTemplate' class='signupTemplate')
+            form(action='/signup' class='model-content animate')
+                div(class='imgcontainer')
+                    span(onclick="document.getElementById('signupTemplate').style.display='none'" class="close" title="Close PopUp") &#10006;
+                    img(src='/PICS/logo.png')
+                    h2(style='font-size:30px; color:rgb(12, 88, 143); font-weight:bold') Online Compiler Signup
+                div(class='loginContainer')
+                    p(style='font-size:20px; font-weight:bold; margin-bottom:-7px; color:rgb(0, 162, 255); margin-left:5px;') Username
+                    input(type='text' placeholder='Enter username' name='uname')
+                    p(style='font-size:20px; font-weight:bold; margin-bottom:-7px; margin-top:-4px; color:rgb(0, 162, 255); margin-left:5px;') Email address
+                    input(type='text' placeholder='Enter email address' name='email')           
+                    p(style='font-size:20px; font-weight:bold; margin-bottom:-7px; margin-top:-4px; color:rgb(0, 162, 255); margin-left:5px;') Password
+                    input(type='password' placeholder='Enter password' name='psw')
+                    p(style='font-size:20px; font-weight:bold; margin-bottom:0; margin-top:-4px; color:rgb(0, 162, 255); margin-left:5px;') Repeat password
+                    input(type='password' placeholder='Enter password' name='psw')
+                    button(type='submit' id='templateLoginButton') Sign up
         div(class='toolbar')
-            button(type='button' class='Run' id='runbutton') Run
-            button(type='button' class='Stop' id='stop') Stop
-            button(type='button' class='Save' id='save') Save
+            button(type='button' class='Run' id='runbutton') Run &#10148;
+            button(type='button' class='Stop' id='stop') Stop &#9724;
+            button(type='button' class='Save' id='save' href='/getLang/save') Save &#9660;
             form(method="post" action="/getLang" id="langForm")
                 select(name='languagePicker' id='languagePicker' onchange='this.form.submit()')
                     option(hidden disable selected value) Language
@@ -24,4 +57,16 @@ html
             textarea(class='stdin' id='stdin')
         script.
             document.getElementById('stdinDIV').style.display = 'none';
+            var loginTemplate = document.getElementById('loginTemplate');
+            window.onclick = function (event) {
+                if(event.target == loginTemplate) {
+                    loginTemplate.style.display = 'none';
+                }
+            }
+            var signupTemplate = document.getElementById('signupTemplate');
+            window.onclick = function (event) {
+                if(event.target == signupTemplate) {
+                    signupTemplate.style.display = 'none';
+                }
+            }
         block content

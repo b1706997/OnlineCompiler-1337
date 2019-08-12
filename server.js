@@ -73,12 +73,6 @@ app.post('/getLang', (req,res) => {
                 return res.status(200).send(parsedData.output+'\n\n-----------------------------\n\n'+'CPU runtime: '+parsedData.cpuTime+" seconds");
             }
         })
-
-
-
-
-
-
         /*// change the code file name to the correct language 
         if(lang==='C++')
         {
@@ -127,5 +121,32 @@ app.post('/getLang', (req,res) => {
                 });
             } 
         }) */
-    }) 
+    })
+    // Save button route
+    app.post('/getLang/save',(req,res) => {
+        var code = req.body;
+        if(lang==='C++')
+        {
+            var Path = path.join(__dirname,"public","CODE","code.cpp");
+        }
+        else if(lang==='Java')
+        {
+            var Path = path.join(__dirname,"public","CODE","code.java");
+        }
+        else if(lang==='Python')
+        {
+            var Path = path.join(__dirname,"public","CODE","code.pyd");
+        }
+        fs.writeFile(Path,code,(err) => {
+            if(err) throw err;
+            
+            console.log('File saved');
+        });
+        res.download('ChangeLog.txt',(err)=>{
+            if(err) throw err;
+
+            console.log('downloaded');
+        });
+    });
+
 });
