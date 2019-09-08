@@ -4,43 +4,46 @@ html
         block head
             div(class='header')
                 h1 Online Compiler
-                div(class='innerheader')
+                div(class='innerheader' id='UserToolbar')
                     button( class='login' id='login' onclick="document.getElementById('loginTemplate').style.display='block'") Login
                     button( class='signup' id='signup' onclick="document.getElementById('signupTemplate').style.display='block'") Sign up
+                    div(id='loggedIn')
+                        p(class='usernamedisplay' id='usernamedisplay') #{uname}
+                        button(type='button' id='logoutButton') &#xe163
             meta(charset="UTF-8")
             meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
             link(rel="stylesheet" href="/CSS/style.css" type="text/css")
             meta(name="viewport" content="width=device-width" initial-scale="1")
     body
         div(id='loginTemplate' class='loginTemplate')
-            form(action='/login' class='model-content animate')
+            form( class='model-content animate')
                 div(class='imgcontainer')
                     span(onclick="document.getElementById('loginTemplate').style.display='none'" class="close" title="Close PopUp") &#10006;
                     img(src='/PICS/logo.png')
                     h2(style='font-size:30px; color:rgb(12, 88, 143); font-weight:bold') Online Compiler Login
                 div(class='loginContainer')
-                    input(type='text' placeholder='Enter username' name='uname')
-                    input(type='password' placeholder='Enter password' name='psw')
-                    button(type='submit' id='templateLoginButton') Login
+                    input(type='text' placeholder='Enter username' name='uname' id='Luname')
+                    input(type='password' placeholder='Enter password' name='psw' id='Lpsw')
+                    button(type='button' id='templateLoginButton' ) Login
                     label #[input(type='checkbox' style='margin:26px 30px; width:25px;')]
                         |Remember me
                     a(href="#" style="text-decoration:none; float:right; margin-right:34px; margin-top:26px; font-size:20px;") Forgot Password ?
         div(id='signupTemplate' class='signupTemplate')
-            form(action='/signup' class='model-content animate')
+            form( class='model-content animate')
                 div(class='imgcontainer')
                     span(onclick="document.getElementById('signupTemplate').style.display='none'" class="close" title="Close PopUp") &#10006;
                     img(src='/PICS/logo.png')
                     h2(style='font-size:30px; color:rgb(12, 88, 143); font-weight:bold') Online Compiler Signup
                 div(class='loginContainer')
                     p(style='font-size:20px; font-weight:bold; margin-bottom:-7px; color:rgb(0, 162, 255); margin-left:5px;') Username
-                    input(type='text' placeholder='Enter username' name='uname')
-                    p(style='font-size:20px; font-weight:bold; margin-bottom:-7px; margin-top:-4px; color:rgb(0, 162, 255); margin-left:5px;') Email address
-                    input(type='text' placeholder='Enter email address' name='email')           
+                    input(type='text' placeholder='Enter username' name='uname' id='uname')
+                    p(style='font-size:20px; font-weight:bold; margin-bottom:-7px; margin-top:-4px; color:rgb(0, 162, 255); margin-left:5px;') Email address                    
+                    input(type='text' placeholder='Enter email address' name='email' id='email')           
                     p(style='font-size:20px; font-weight:bold; margin-bottom:-7px; margin-top:-4px; color:rgb(0, 162, 255); margin-left:5px;') Password
-                    input(type='password' placeholder='Enter password' name='psw')
+                    input(type='password' placeholder='Enter password' name='psw' id='psw')
                     p(style='font-size:20px; font-weight:bold; margin-bottom:0; margin-top:-4px; color:rgb(0, 162, 255); margin-left:5px;') Repeat password
-                    input(type='password' placeholder='Enter password' name='psw')
-                    button(type='submit' id='templateLoginButton') Sign up
+                    input(type='password' placeholder='Enter password' name='psw' id='pswRepeat')
+                    button(type='button' id='templateSignupButton' ) Sign up
         div(class='toolbar')
             button(type='button' class='Run' id='runbutton') Run &#10148;
             button(type='button' class='Stop' id='stop') Stop &#9724;
@@ -55,18 +58,105 @@ html
         div(id='stdinDIV')
             p(id='stdininput') Stdin inputs
             textarea(class='stdin' id='stdin')
+        //- SCRIPT.START.HERE
         script.
+            var UnameVarible = document.getElementById('usernamedisplay').innerHTML;
+            const signupTemplate = document.getElementById('signupTemplate');
+            const loginTemplate = document.getElementById('loginTemplate');
+            if(UnameVarible=='' || UnameVarible==null)
+            {
+                document.getElementById('loggedIn').style.display = 'none';
+            }
+            else
+            {
+                document.getElementById('loggedIn').style.display = 'block';
+                document.getElementById('login').style.display='none';
+                document.getElementById('signup').style.display='none';
+            }
             document.getElementById('stdinDIV').style.display = 'none';
-            var loginTemplate = document.getElementById('loginTemplate');
             window.onclick = function (event) {
                 if(event.target == loginTemplate) {
                     loginTemplate.style.display = 'none';
                 }
             }
-            var signupTemplate = document.getElementById('signupTemplate');
             window.onclick = function (event) {
                 if(event.target == signupTemplate) {
                     signupTemplate.style.display = 'none';
                 }
             }
+            //- SIGNUP BUTTON LISTENER
+            const signupbutton=document.getElementById('templateSignupButton');
+            signupbutton.addEventListener('click',function(e){
+                var uname = document.getElementById('uname').value;
+                var psw = document.getElementById('psw').value;
+                var pswRe = document.getElementById('pswRepeat').value;
+                var email = document.getElementById('email').value;
+
+                if(uname==''||psw==''||pswRe==''||email=='')
+                {
+                    return alert('Please fill in all fields');
+                }
+                // send uname psw and email to server;
+                if(psw==pswRe)
+                {
+                    var user = '' + 'uname=' + window.encodeURIComponent(uname) + '&psw=' + window.encodeURIComponent(psw) + '&email=' + window.encodeURIComponent(email);
+                    var xhttp = new XMLHttpRequest();
+                    console.log(user);
+                    xhttp.onreadystatechange = function() {
+                        if(this.readyState==4 && this.status==200) {
+                            location.reload();
+                        }
+                        if(this.readyState==4 && this.status==300) {
+                            alert(this.responseText);
+                            document.getElementById('email').value = null;
+                            document.getElementById('email').focus();
+                        }
+                        if(this.readyState==4 && this.status==301) {
+                            alert(this.responseText);
+                            document.getElementById('uname').value = null;
+                            document.getElementById('uname').focus();
+                        }
+                    }
+                    xhttp.open("POST","/SignUp",true);
+                    xhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+                    xhttp.send(user);
+                }
+                else
+                {
+                    alert('Passwords do not match');
+                    document.getElementById('pswRepeat').value = null;
+                    document.getElementById('pswRepeat').focus();
+                }
+            });
+            //- LOGIN BUTTON LISTENER
+            const loginButton = document.getElementById('templateLoginButton');
+            loginButton.addEventListener('click',function(e){
+                //-console.log('invoked');
+                const uname = document.getElementById('Luname').value;
+                const psw = document.getElementById('Lpsw').value;
+                if(uname==''||psw=='')
+                    return alert('Please fill in all fields');
+                var user = '' + 'uname=' + window.encodeURIComponent(uname) + '&psw=' + window.encodeURIComponent(psw);
+                xhttp = new XMLHttpRequest();
+                xhttp.open('POST','/Login',true)
+                xhttp.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+                xhttp.send(user);
+                xhttp.onreadystatechange = function() {
+                    if(this.status==400&&this.readyState==4)
+                        alert(this.responseText);
+                    if(this.status==200&&this.readyState==4)
+                        location.reload();
+                }
+            });
+            const logoutButton = document.getElementById('logoutButton');
+            logoutButton.addEventListener('click',function(e){
+                xhttp = new XMLHttpRequest();
+                xhttp.open('GET','/Logout',true)
+                xhttp.send();
+                xhttp.onreadystatechange = function() {
+                    if(this.status==200&&this.readyState==4)
+                        location.reload();
+                }
+            })
+
         block content

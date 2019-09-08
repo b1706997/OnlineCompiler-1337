@@ -45,6 +45,13 @@ head {
     font-display:bold;
     font-weight: bold;
 }
+.usernamedisplay {
+    font-size: 20px;
+    color:white;
+    right:-150px;
+    position: relative;
+    bottom:-8px;
+}
 .stdin {
     height: 25px;
     width: 350px;
@@ -59,7 +66,6 @@ head {
     position: relative;
     height:20px;
 }
-
 button {
     width: 100px;
     height: 40px;
@@ -214,4 +220,18 @@ input[type=text], input[type=password] {
     font-size:20px;
     color:white;
     line-height: 5px;
+}
+#templateSignupButton {
+    width: 90%;
+    background-color: rgb(0, 183, 255);
+    padding: 14px 20px;
+    margin: 8px 26px;
+    border:none;
+    cursor: pointer;
+    font-size:20px;
+    color:white;
+    line-height: 5px;
+}
+#logoutButton {
+    background-color: rgb()
 }
