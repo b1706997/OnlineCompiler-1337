@@ -10,7 +10,7 @@ const MongoStore = require('connect-mongo')(session);
 const app = express();
 var lang;
 // Database create    //  localURL:  mongodb://localhost:27017/myapp
-var DBurl = 'mongodb+srv://son:siliconvalley@cluster0-omoxa.mongodb.net/test?retryWrites=true&w=majority';
+var DBurl = process.env.MONGODB_URI //'mongodb+srv://son:siliconvalley@cluster0-omoxa.mongodb.net/test?retryWrites=true&w=majority';
 mongoose.connect(DBurl, {useNewUrlParser: true});
 var db = mongoose.connection;
 //Session
