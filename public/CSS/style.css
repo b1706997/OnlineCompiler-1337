@@ -20,8 +20,9 @@ html {
 }
 .innerheader {
     background-color: rgb(12, 88, 143);
-    left:1270px;
-    position: relative;
+    float:right;
+	overflow:hidden;
+    position:relative;
     width: 210px;
     top:-87px;
 }
@@ -46,11 +47,11 @@ head {
     font-weight: bold;
 }
 .usernamedisplay {
-    font-size: 20px;
-    color:white;
-    right:-150px;
-    position: relative;
-    bottom:-8px;
+	background-color: Transparent;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
 }
 .stdin {
     height: 25px;
@@ -70,7 +71,7 @@ button {
     width: 100px;
     height: 40px;
     color:white;
-    font-display: bold;
+    font-display: auto;
     font-size: 20px;
     border-radius: 2px;
     border:none;
@@ -233,5 +234,5 @@ input[type=text], input[type=password] {
     line-height: 5px;
 }
 #logoutButton {
-    background-color: rgb()
+	background-color: rgb(0, 162, 255);
 }
