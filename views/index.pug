@@ -9,7 +9,10 @@ html
                     button( class='signup' id='signup' onclick="document.getElementById('signupTemplate').style.display='block'") Sign up
                     div(id='loggedIn')
                         button(	class='usernamedisplay' id='usernamedisplay') #{uname}
-                        button(	class='logoutbutton' id='logoutButton' ) Logout
+                        div(class='usetting' id='usetting')
+                           a(href='#' class='usoption' id='uprofile' ) Profile
+                           a(href='#' class='usoption' id='scode') Saved Code
+                           a(href='#' class='usoption' id='logoutButton' ) Logout
             meta(charset="UTF-8")
             meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
             link(rel="stylesheet" href="/CSS/style.css" type="text/css")
@@ -160,3 +163,4 @@ html
             })
 
         block content
+
