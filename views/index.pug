@@ -1,3 +1,4 @@
+block variables
 doctype html
 html
     head
@@ -63,6 +64,7 @@ html
             var UnameVarible = document.getElementById('usernamedisplay').innerHTML;
             const signupTemplate = document.getElementById('signupTemplate');
             const loginTemplate = document.getElementById('loginTemplate');
+            //LOGGED-IN / NON-LOGGED IN CONTROL
             if(UnameVarible=='' || UnameVarible==null)
             {
                 document.getElementById('loggedIn').style.display = 'none';
@@ -73,7 +75,9 @@ html
                 document.getElementById('login').style.display='none';
                 document.getElementById('signup').style.display='none';
             }
+            //hide std input bar
             document.getElementById('stdinDIV').style.display = 'none';
+            //login/signup template close when click outside
             window.onclick = function (event) {
                 if(event.target == loginTemplate) {
                     loginTemplate.style.display = 'none';
@@ -148,6 +152,7 @@ html
                         location.reload();
                 }
             });
+            //LOGOUT BUTTON LISTENER
             const logoutButton = document.getElementById('logoutButton');
             logoutButton.addEventListener('click',function(e){
                 xhttp = new XMLHttpRequest();

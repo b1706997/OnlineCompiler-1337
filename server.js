@@ -5,12 +5,13 @@ const path = require('path');
 const request = require('request');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const app = express();
 var lang;
 // Database create    //  localURL:  mongodb://localhost:27017/myapp
-var DBurl = process.env.MONGODB_URI //'mongodb+srv://son:siliconvalley@cluster0-omoxa.mongodb.net/test?retryWrites=true&w=majority';
+var DBurl = 'mongodb://localhost:27017/myapp' /*process.env.MONGODB_URI*/ //'mongodb+srv://son:siliconvalley@cluster0-omoxa.mongodb.net/test?retryWrites=true&w=majority';
 mongoose.connect(DBurl, {useNewUrlParser: true});
 var db = mongoose.connection;
 //Session
@@ -28,6 +29,16 @@ db.once('open', function() {
     console.log('Database connected');
   // we're connected!
 });
+var ProgramSchema = new mongoose.Schema ({
+    language: {
+        type:String,
+        required:true
+    },
+    code: {
+        type:String
+    },
+    user:{type:Schema.Types.ObjectId,ref:'User'}
+}); 
 var UserSchema = new mongoose.Schema ({
     email: {
         type:String,
@@ -44,9 +55,17 @@ var UserSchema = new mongoose.Schema ({
     password: {
         type:String,
         required:true,
-    }
+    },
+    program:[{type:Schema.Types.ObjectId,ref:'Program'}]
     ,
 });
+var User = mongoose.model('User',UserSchema);
+var Program = mongoose.model('Program',ProgramSchema);
+module.exports = User;
+module.exports = Program;
+/* UserSchema.methods.nextProgram = function nextProgram(lang,cb) {
+    
+}; */
 /*UserSchema.statics.authenticate = function (email, password, callback) {
     User.findOne({ email: email })
       .exec(function (err, user) {
@@ -78,20 +97,17 @@ var UserSchema = new mongoose.Schema ({
       next();
     })
   });*/
-var User = mongoose.model('User',UserSchema);
-module.exports = User;
-/* TESTING ONLY
-var sonnguyen = new User ({
+ //* TESTING ONLY
+/* var sonnguyen = new User ({
     email: 'nguyennhatson1810@gmail.com',
     username:'zaz',
     password:'821410'
 });
-
 User.find(function(err,users){
     if (err) throw err;
 
     console.log(users);
-})*/
+}) */
 app.use(express.static(__dirname + '/public'));  // CSS use 
 const server = app.listen(process.env.PORT || 1111,err => {
 	if(err) throw err;
@@ -182,6 +198,7 @@ app.post('/getLang', (req,res) => {
     lang = req.body.languagePicker;
     //check if logged in or not
     User.findById(req.session.userId)
+    .populate('program')
     .exec(function(err,user) {
         if (err) return next(err)
 
@@ -198,7 +215,32 @@ app.post('/getLang', (req,res) => {
                 if(lang=='HTML/CSS')
                     res.render('HTML_CSS',{uname: user.username});
                 else
-                    res.render(lang,{uname: user.username});
+                {
+                    Program.findOne({user:req.session.userId,language:lang})
+                    .exec(function(err,program){
+                        if(err) throw err;
+
+                        if(program==null) // IF USER HAVENT GOT ANY PROGRAM
+                        {
+                            const A = new Program({
+                                _id:Schema.Types.ObjectId,
+                                language:lang,
+                                code:'TESTINGTHOINHE',
+                                user:user._id
+                            })
+                            A.save();
+                            req.session.programId = A._id;
+                            res.render(lang,{uname:user.username,code:A.code});
+                        }
+                        else
+                        {
+
+                            req.session.programId = program._id;
+                            res.render(lang,{uname: user.username,code:program.code});
+                        }                     
+                    });
+                    //res.render(lang,{uname: user.username});
+                }
             }
     })
     app.post('/getLang/run',(req,res) => {
@@ -245,59 +287,12 @@ app.post('/getLang', (req,res) => {
                 //console.log(parsedData.output);
                 return res.status(200).send(parsedData.output+'\n\n-----------------------------\n\n'+'CPU runtime: '+parsedData.cpuTime+" seconds");
             }
-        })
-        /*// change the code file name to the correct language 
-        if(lang==='C++')
-        {
-            var newPath = path.join(__dirname,"public","CODE","code.cpp");
-        }
-        else if(lang==='Javascript')
-        {
-            var newPath = path.join(__dirname,"public","CODE","code.js");
-        }
-        else if(lang==='Java')
-        {
-            var newPath = path.join(__dirname,"public","CODE","code.java");
-        }
-        else if(lang==='Python')
-        {
-            var newPath = path.join(__dirname,"public","CODE","code.pyd");
-        }
-        //Rename
-        fs.rename(codePath,newPath,function(err) {
-            if (err) throw err;
-
-            console.log('File name changed');
-        });
-        
-        // compile a file 
-        var spawn = require('child_process').spawn;
-        // language switch //['-lstdc++']
-        var compile = spawn('gcc', ['./public/CODE/code.cpp']);
-        compile.stdout.on('data', function (data) {
-            console.log('stdout: ' + data);
-        });
-        compile.stderr.on('data', function (data) {
-            console.log(String(data));
-            res.send(data);
-        });
-        compile.on('close', function (data) {
-            if (data === 0) {
-                var run = spawn('./a.exe', []);
-                run.stdout.on('data', function (output) {
-                    console.log(String(output));
-                    res.send(output);
-                });
-                run.stderr.on('data', function (output) {
-                    console.log(String(output));
-                    res.send(output);
-                });
-            } 
-        }) */
+        })         
     })
     // Save button route
     app.post('/getLang/save',(req,res) => {
-        var code = req.body;
+        console.log('worked');
+ /*        var code = req.body;
         if(lang==='C++')
         {
             var Path = path.join(__dirname,"public","CODE","code.cpp");
@@ -320,7 +315,116 @@ app.post('/getLang', (req,res) => {
 
             console.log('downloaded');
         });*/
-        res.status(200).send('Yup');
+        //res.status(200).send('Yup'); 
+        User.findById(req.session.userId)
+        .exec(function(e,user){
+            if(e) return next(err);
+
+            else
+            {
+                console.log(user.program[0]);
+            }
+        });
     });
 });
+app.use(bodyParser.text());
+app.post('/codePush',(req,res)=>{
+    //console.log(req.body);
+    if(req.session.programId)   
+    {
+        Program.findById(req.session.programId)
+        .populate('user')
+        .exec(function(err,program) {
+            if (err) throw err;
+
+            else
+            {
+                program.lang = lang;
+                program.code = req.body;    
+            }
+        });
+    }
+    else
+    {
+        return;
+        /* if(req.session.userId)
+        {
+            User.findById(req.session.userId)
+            .exec(function(err,user){
+                if (err) throw err;
+                else
+                {
+                    if(user==null)
+                        return;//codepush only for logged in user
+                    else
+                    {
+                        user.save(function(err){
+                            if(err) throw err;
+                            else
+                            {
+                                const program2 = new Program({
+                                    language:lang,
+                                    code:req.body,
+                                    user:user._id
+                                })
+                                program2.save();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        else
+            return; */
+    }
+        /* User.findById(req.session.userId)
+        .exec(function(err,user){
+            if(err) console.log(err);
+
+            else
+            { 
+                user.save(function(e) {
+                    var program1 = new Program({
+                        language:lang,
+                        code: req.body,
+                        user:user._id
+                        });
+                        program1.save(function(err){
+                            if (err) console.log(err) ;
+                        })
+                });
+            }
+        }); */
+            //if (err) return next(err);
+
+            //else
+            //{
+                /* var m = mongoose.model('Program',Program);
+                var program1 = new m;
+                program1.language = lang;
+                program1.code = req.body; 
+                var program1 = {
+                    "language":lang,
+                    "code": req.body
+                };
+                console.log(JSON.stringify(program1));
+                /* User.aggregate([
+                    {$match:{_id:req.session.userId}},
+                    {$addFields:{program:{$concatArrrays:["$program",[program1]]}}}
+                ]) */
+
+                //User.update({_id:req.session.userId},{$push:{program:{"language":lang,"code":req.body}}});
+
+                //User.findOneAndUpdate({_id:req.session.userId}, {$push: {program:{"Program.language":lang,"Program.code":req.body}}});
+
+
+               /*  User.update(
+                    {_id:req.session.userId},
+                    {$push:{program: program1}}
+                ) */
+                //res.end();
+            //}
+        //})
+    
+})
 
