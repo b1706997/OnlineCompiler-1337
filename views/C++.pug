@@ -1,5 +1,6 @@
 extends index
 block content
+    p(id='codeGet' hidden) #{code}
     div(id='cpp')
         pre(id='editor').
             int main() {
@@ -12,6 +13,30 @@ block content
             var editor = ace.edit('editor');
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode('ace/mode/c_cpp');
+            //LOGGEDIN / nonLOGGEDIN CONTROL 
+            //var UnameVarible=document.getElementById('usernamedisplay').innerHTML;
+            if(UnameVarible==''||UnameVarible==null)
+            { // non LOGGED-IN
+                console.log('No');
+            }
+            else
+            { // LOGGED IN
+                var loggedCode = document.getElementById('codeGet').innerHTML;
+                console.log(loggedCode);
+                editor.session.setValue(loggedCode);
+            }
+            // Editor On-Change listener 
+           // var input = document.getElementById('editor');
+            editor.session.on('change',function(e){
+                var xhttp = new XMLHttpRequest();
+                var code = editor.getValue();
+                var picker = document.getElementById('languagePicker');
+                var lang = picker.options[picker.selectedIndex].text;
+                var program = ""+'lang='+window.encodeURIComponent(lang)+'&code='+window.encodeURIComponent(code);
+                xhttp.open('POST','/codePush',true);
+                xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xhttp.send(program);
+            })
         textarea(class="output" disabled="disabled" id="output") /* Output */
         script.
             console.log('client-side script running :D');

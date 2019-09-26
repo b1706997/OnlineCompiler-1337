@@ -59,6 +59,10 @@ html
         div(id='stdinDIV')
             p(id='stdininput') Stdin inputs
             textarea(class='stdin' id='stdin')
+        div(id='programDIV')
+            button(type='button' id='new' onclick='newProgram()') +
+            button(type='button' id='next' onclick='nextProgram()') ->
+            button(type='button' id='prev' onclick='prevProgram()') <-
         //- SCRIPT.START.HERE
         script.
             var UnameVarible = document.getElementById('usernamedisplay').innerHTML;
@@ -86,6 +90,61 @@ html
             window.onclick = function (event) {
                 if(event.target == signupTemplate) {
                     signupTemplate.style.display = 'none';
+                }
+            }
+            //PROGRAM CONTROL
+            function newProgram() {
+                var picker = document.getElementById('languagePicker');
+                var lang = picker.options[picker.selectedIndex].text;
+                var xhttp = new XMLHttpRequest();
+                xhttp.open('POST','/newProgram',true)
+                xhttp.setRequestHeader('Content-Type','text/plain');
+                xhttp.send(lang);
+                xhttp.onreadystatechange = function() {
+                    if(this.readyState==4&&this.status==200)
+                    {
+                        const getLang = document.getElementById('langForm')
+                        getLang.submit();
+                        //refresh the /getLang route
+                    }
+                }
+            }
+            function nextProgram() {
+                var picker = document.getElementById('languagePicker');
+                var lang = picker.options[picker.selectedIndex].text;
+                var xhttp = new XMLHttpRequest();
+                xhttp.open('POST','/nextProgram',true)
+                xhttp.setRequestHeader('Content-Type','text/plain');
+                xhttp.send(lang);
+                xhttp.onreadystatechange = function() {
+                    if(this.readyState==4&&this.status==200)
+                    {
+                        const getLang = document.getElementById('langForm')
+                        getLang.submit();
+                    }
+                    if(this.readyState==4&&this.status==300)
+                    {
+                        alert('End of programList');
+                    }
+                }
+            }
+            function prevProgram() {
+                var picker = document.getElementById('languagePicker');
+                var lang = picker.options[picker.selectedIndex].text;
+                var xhttp = new XMLHttpRequest();
+                xhttp.open('POST','/prevProgram',true)
+                xhttp.setRequestHeader('Content-Type','text/plain');
+                xhttp.send(lang);
+                xhttp.onreadystatechange = function() {
+                    if(this.readyState==4&&this.status==200)
+                    {
+                        const getLang = document.getElementById('langForm')
+                        getLang.submit();
+                    }
+                    if(this.readyState==4&&this.status==300)
+                    {
+                        alert('End of programList');
+                    }
                 }
             }
             //- SIGNUP BUTTON LISTENER

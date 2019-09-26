@@ -35,9 +35,12 @@ block content
             editor.session.on('change',function(e){
                 var xhttp = new XMLHttpRequest();
                 var code = editor.getValue();
+                var picker = document.getElementById('languagePicker');
+                var lang = picker.options[picker.selectedIndex].text;
+                var program = ""+'lang='+window.encodeURIComponent(lang)+'&code='+window.encodeURIComponent(code);
                 xhttp.open('POST','/codePush',true);
-                xhttp.setRequestHeader("Content-type","text/plain");
-                xhttp.send(code);
+                xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xhttp.send(program);
             })
         textarea(class="output" disabled="disabled" id="output") /* Output */
         script.
@@ -62,9 +65,11 @@ block content
             saveButton.addEventListener('click',function(e) {
                 var xhttp = new XMLHttpRequest();
                 var code = editor.getValue();
+                var lang = document.getElementById('languagePicker').innerHTML;
+                var program = ""+'lang='+window.encodeURIComponent(lang)+'&code='+window.encodeURIComponent(code);
                 xhttp.open("POST",'/getLang/save',true);
-                xhttp.setRequestHeader("Content-type",'text/plain');
-                xhttp.send(code);
+                xhttp.setRequestHeader("Content-type",'application/x-www-form-urlencoded');
+                xhttp.send(program);
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         console.log(this.responseText);

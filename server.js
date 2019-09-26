@@ -197,52 +197,79 @@ app.get('/Logout',(req,res)=>{
 app.post('/getLang', (req,res) => {
     lang = req.body.languagePicker;
     //check if logged in or not
-    User.findById(req.session.userId)
-    .populate('program')
-    .exec(function(err,user) {
-        if (err) return next(err)
-
-        else 
-            if(user==null)
-            {
-                if(lang==="HTML/CSS")
-                    res.render('HTML_CSS');
-                else
-                    res.render(lang);
-            }
-            else 
-            {
-                if(lang=='HTML/CSS')
-                    res.render('HTML_CSS',{uname: user.username});
+    if(req.session.programId)
+    {
+        if(lang=="HTML/CSS")
+            return res.render('HTML_CSS',{uname:user.username});
+        else
+        {
+            User.findById(req.session.userId)
+            .exec(function(err,user){
+                if(err) throw err;
                 else
                 {
-                    Program.findOne({user:req.session.userId,language:lang})
+                    Program.findOne({_id:req.session.programId})
                     .exec(function(err,program){
-                        if(err) throw err;
-
-                        if(program==null) // IF USER HAVENT GOT ANY PROGRAM
-                        {
-                            const A = new Program({
-                                _id:Schema.Types.ObjectId,
-                                language:lang,
-                                code:'TESTINGTHOINHE',
-                                user:user._id
-                            })
-                            A.save();
-                            req.session.programId = A._id;
-                            res.render(lang,{uname:user.username,code:A.code});
-                        }
+                        if (err) throw err;
                         else
                         {
-
-                            req.session.programId = program._id;
-                            res.render(lang,{uname: user.username,code:program.code});
-                        }                     
+                            return res.render(lang,{uname:user.username,code:program.code})
+                        }
                     });
-                    //res.render(lang,{uname: user.username});
                 }
-            }
-    })
+            })
+        }
+    }
+    else
+    {
+        User.findById(req.session.userId)
+        .populate('program')
+        .exec(function(err,user) {
+            if (err) return next(err)
+
+            else 
+                if(user==null)
+                {
+                    if(lang==="HTML/CSS")
+                        return res.render('HTML_CSS');
+                    else
+                        return res.render(lang);
+                }
+                else 
+                {
+                    if(lang=='HTML/CSS')
+                        return res.render('HTML_CSS',{uname: user.username});
+                    else
+                    {
+                        Program.findOne({user:req.session.userId,language:lang})
+                        .exec(function(err,program){
+                            if(err) throw err;
+
+                            if(program==null||program=='') // IF USER HAVENT GOT ANY PROGRAM
+                            {
+                                const A = new Program({
+                                    language:lang,
+                                    code:'',
+                                    user:user._id
+                                })
+                                A.save(function(e){
+                                    if(e) throw e;
+                                });
+                                req.session.programId = A._id;
+                                return res.render(lang,{uname:user.username,code:A.code});
+                            }
+                            else
+                            {
+                                req.session.programId = program._id;
+                                return res.render(lang,{uname: user.username,code:program.code});
+                            }                     
+                        });
+                        //res.render(lang,{uname: user.username});
+                    }
+                }
+            
+        })
+    }
     app.post('/getLang/run',(req,res) => {
         console.log('Server route running');
         var program = JSON.parse(JSON.stringify(req.body));
@@ -329,24 +356,36 @@ app.post('/getLang', (req,res) => {
 });
 app.use(bodyParser.text());
 app.post('/codePush',(req,res)=>{
-    //console.log(req.body);
+    console.log(req.body);
+    var reqbody = JSON.parse(JSON.stringify(req.body));
     if(req.session.programId)   
     {
-        Program.findById(req.session.programId)
-        .populate('user')
-        .exec(function(err,program) {
+        Program.findOne({_id:req.session.programId})
+        .exec(function(err,program){
             if (err) throw err;
 
             else
             {
-                program.lang = lang;
-                program.code = req.body;    
+                if(program==null)
+                {
+                    console.log('no program found');
+                }
+                else
+                {
+                    program.language = reqbody.lang;
+                    program.code = reqbody.code;
+                    program.save();
+                    req.session.programId = program._id;
+                    res.end();
+                }
             }
-        });
+        })
     }
     else
     {
+        console.log('nope');
         return;
+        res.end();
         /* if(req.session.userId)
         {
             User.findById(req.session.userId)
@@ -427,4 +466,73 @@ app.post('/codePush',(req,res)=>{
         //})
     
 })
-
+app.post('/newProgram',(req,res)=>{
+    console.log(req.body);
+    if(req.session.userId)
+    {
+        var newProgram = new Program({
+            language:req.body,
+            code:'',
+            user:req.session.userId
+        })
+        newProgram.save();
+        req.session.programId = newProgram._id;
+        res.sendStatus(200);
+    }
+    else
+    {
+        return;
+    }
+});
+app.post('/nextProgram',(req,res)=>{
+    if(req.session.programId&&req.session.userId)
+    {
+        Program.findOne({_id:{$gt:req.session.programId},language:req.body,user:req.session.userId})
+        .exec(function(err,program){
+            if(err) throw err;
+            else
+            {
+                if(program==null)
+                {
+                    res.sendStatus(300);
+                    //END OF PROGRAM LIST
+                }
+                else
+                {
+                    req.session.programId = program._id;
+                    res.sendStatus(200);
+                }
+            }
+        });
+    }   
+    else
+    {
+        return;
+    }
+});
+app.post('/prevProgram',(req,res)=>{
+    if(req.session.programId&&req.session.userId)
+    {
+        Program.findOne({_id:{$lt:req.session.programId},language:req.body,user:req.session.userId})
+        .exec(function(err,program){
+            if(err) throw err;
+            else
+            {
+                if(program==null)
+                {
+                    res.sendStatus(300);
+                    //END OF PROGRAM LIST
+                }
+                else
+                {
+                    req.session.programId = program._id;
+                    res.sendStatus(200);
+                }
+            }
+        });
+    }   
+    else
+    {
+        return;
+    }
+});
