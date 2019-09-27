@@ -199,26 +199,88 @@ app.post('/getLang', (req,res) => {
     //check if logged in or not
     if(req.session.programId)
     {
-        if(lang=="HTML/CSS")
-            return res.render('HTML_CSS',{uname:user.username});
-        else
-        {
-            User.findById(req.session.userId)
-            .exec(function(err,user){
-                if(err) throw err;
+        Program.findById(req.session.programId)
+        .exec(function(err,program){
+            if(err) throw err;
+            else
+            {  
+                //program language diffrent from current lang
+                if(program.language!=lang)
+                {  
+                    User.findById(req.session.userId)
+                    .populate('program')
+                    .exec(function(err,user) {
+                        if (err) return next(err)
+
+                        else 
+                            if(user==null)
+                            {
+                                if(lang==="HTML/CSS")
+                                    return res.render('HTML_CSS');
+                                else
+                                    return res.render(lang);
+                            }
+                            else 
+                            {
+                                if(lang=='HTML/CSS')
+                                    return res.render('HTML_CSS',{uname: user.username});
+                                else
+                                {
+                                    Program.findOne({user:req.session.userId,language:lang})
+                                    .exec(function(err,program){
+                                        if(err) throw err;
+
+                                        if(program==null||program=='') // IF USER HAVENT GOT ANY PROGRAM
+                                        {
+                                            const A = new Program({
+                                                language:lang,
+                                                code:'',
+                                                user:user._id
+                                            })
+                                            A.save(function(e){
+                                                if(e) throw e;
+                                            });
+                                            req.session.programId = A._id;
+                                            return res.render(lang,{uname:user.username,code:A.code});
+                                        }
+                                        else
+                                        {
+                                            req.session.programId = program._id;
+                                            return res.render(lang,{uname: user.username,code:program.code});
+                                        }                     
+                                    });
+                                    //res.render(lang,{uname: user.username});
+                                }
+                            }
+                        
+                    })
+                }
                 else
                 {
-                    Program.findOne({_id:req.session.programId})
-                    .exec(function(err,program){
-                        if (err) throw err;
+                        if(lang=="HTML/CSS")
+                            return res.render('HTML_CSS',{uname:user.username});
                         else
                         {
-                            return res.render(lang,{uname:user.username,code:program.code})
+                            User.findById(req.session.userId)
+                            .exec(function(err,user){
+                                if(err) throw err;
+                                else
+                                {
+                                    Program.findOne({_id:req.session.programId})
+                                    .exec(function(err,program){
+                                        if (err) throw err;
+                                        else
+                                        {
+                                            return res.render(lang,{uname:user.username,code:program.code})
+                                        }
+                                    });
+                                }
+                            })
                         }
-                    });
                 }
-            })
-        }
+            }
+        })
+       
     }
     else
     {
